@@ -174,6 +174,7 @@ int
 tinycom_init(int argc, char *argv[])
 {
     int c = -1;
+    int err = 0;
     struct tinycom *t = tinycom_object();
 
     if ( argc < TINYCOM_MIN_ARGC ) {
@@ -192,35 +193,40 @@ tinycom_init(int argc, char *argv[])
     for (;;)
     {
         c = getopt(argc, argv, "b:d:hp:s:");
-        if (c < 0) {
-            dbg("%s argument parse error\n", __func__);
-            goto out_err;
-        }
+        if (c < 0)
+            break;
         switch (c)
         {
             case 'h':
             usage();
             break;
             case 'b':
-            tinycom_init_baudrate(t->fd, atoi(optarg));
+            if (tinycom_init_baudrate(t->fd, atoi(optarg)))
+                err++;
             break;
             case 'd':
-            tinycom_init_databit(t->fd, atoi(optarg));
+            if (tinycom_init_databit(t->fd, atoi(optarg)))
+                err++;
             break;
             case 'p':
-            tinycom_init_parity(t->fd, *optarg);
+            if (tinycom_init_parity(t->fd, *optarg))
+                err++;
             break;
             case 's':
-            tinycom_init_stopbit(t->fd, atoi(optarg));
+            if (tinycom_init_stopbit(t->fd, atoi(optarg)))
+                err++;
             break;
             default:
             usage();
             break;
         }
     }
-    tinycom_init_misc(t->fd);
+    if (tinycom_init_misc(t->fd))
+        err++;
 
-    return 0;
+    if (err == 0)
+        return 0;
 out_err:
+    dbg("program quit with error\n");
     return 1;
 }

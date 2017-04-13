@@ -38,6 +38,7 @@ static inline int tinycom_open(const char *f)
     if (fd < 0)
         goto out_err;
 
+    dbg("open serial file %s succeed %d\n", f, fd);
     tym.fd = fd;
     return 0;
 out_err:
