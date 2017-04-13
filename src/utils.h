@@ -28,10 +28,10 @@ static inline void usage(void)
             "\t-d  \tdata bit, "
                 "example: 5, 6, 7, 8\n"
             "\t-p  \tparity, "
-                "example: 0 (no parity), 1 odd, 2 even\n"
+                "example: n/N (no parity), o/O odd, e/E even, s/S as no parity\n"
             "\t-s  \tstop bit, "
-                "example: 0 (no stop bit), 1, 2\n"
-            "\n\t%s -b 115200 -d 8 -p 0 -s 1 /dev/ttyS0\n"
+                "example: 1, 2\n"
+            "\n\t%s -b 115200 -d 8 -p N -s 1 /dev/ttyS0\n"
             "\n", \
             prog_name, prog_name);
 #if 0
